@@ -4,9 +4,46 @@
   padding: 0;
   box-sizing: border-box;
 }
+/* Core Styling & Brand Colors */
+:root {
+    --primary-green: #495E57;
+    --primary-yellow: #F4CE14;
+    --secondary-orange: #EE9972;
+    --secondary-salmon: #FBDABB;
+    --highlight-light: #EDEFEE;
+    --highlight-dark: #333333;
+}
 
 body {
-  font-family: Arial, sans-serif;
+    font-family: 'Karla', sans-serif;
+    color: var(--highlight-dark);
+    background-color: #FFFFFF;
+    margin: 0;
+    padding: 0;
+}
+
+/* Headings styling */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Markazi Text', serif;
+    color: var(--primary-green);
+    margin-top: 0;
+    font-weight: bold;
+}
+
+h1 { font-size: 3.5rem; line-height: 1.1; }
+h2 { font-size: 2.5rem; color: var(--primary-yellow); }
+h3 { font-size: 1.8rem; }
+
+/* Paragraphs and spans */
+p {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--highlight-dark);
+}
+
+span {
+    font-weight: 600;
+    color: var(--secondary-orange);
 }
 
 header {
@@ -17,22 +54,32 @@ header {
 header img {
   width: 200px;
 }
-
+/* Navigation Styling */
 nav {
-  background-color: #495e57;
+    background-color: var(--highlight-light);
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle depth shadow */
 }
 
 nav ul {
-  display: flex;
-  justify-content: center;
-  list-style: none;
-  gap: 20px;
-  padding: 15px;
+    list-style-type: none; /* Removes bullet points */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-nav a {
-  color: white;
-  text-decoration: none;
+nav li a {
+    text-decoration: none;
+    color: var(--primary-green);
+    font-weight: bold;
+    font-size: 1.1rem;
+    transition: color 0.2s ease-in-out;
+}
+
+nav li a:hover {
+    color: var(--primary-yellow); /* Visual feedback on hover */
 }
 
 .hero {
@@ -60,6 +107,14 @@ nav a {
 
   font-weight: bold;
 }
+/* Image Properties */
+img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 16px; /* Rounded corners based on Figma guidelines */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Soft card shadow */
+    object-fit: cover;
+}
 
 footer {
   background: #495e57;
@@ -73,6 +128,7 @@ footer {
   nav ul {
     flex-direction: column;
     align-items: center;
+    gap: 1rem;
   }
 
   .booking-section {
