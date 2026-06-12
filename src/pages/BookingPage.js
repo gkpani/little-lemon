@@ -1,22 +1,14 @@
-import BookingForm from "../components/BookingForm";
+import React from 'react';
+import BookingForm from '../components/BookingForm'; // Back out of pages, look in components
 
-function BookingPage() {
-  return (
-    <main>
-      <h1>Reserve a Table</h1>
-
-      <p>
-        Please complete the form below to reserve
-        your table at Little Lemon.
-      </p>
-
-      <BookingForm />
-
-      <p>
-        We look forward to serving you.
-      </p>
-    </main>
-  );
+function BookingPage({ availableTimes, dispatch }) {
+    return (
+        <main className="booking-page-container">
+            <h1>Reserve a Table</h1>
+            {/* Injecting the reusable component into the page container */}
+            <BookingForm availableTimes={availableTimes} dispatch={dispatch} />
+        </main>
+    );
 }
 
 export default BookingPage;

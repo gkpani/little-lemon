@@ -89,34 +89,35 @@ header {
 header img {
   width: 200px;
 }
-/* Navigation Styling */
+
+/* Base styles for Desktop Mode */
 nav {
-    background-color: var(--highlight-light);
-    padding: 1rem 2rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle depth shadow */
+    background-color: #EDEFEE; /* Little Lemon Highlight Light Grey */
+    padding: 1rem 4rem;
+    display: flex;
+    justify-content: center;   /* Centers your links horizontally */
+    align-items: center;
+    box-shadow: 0px 2px 5px rgba(0,0,0,0.1); /* Adds a subtle shadow separate from content */
 }
 
 nav ul {
-    list-style-type: none; /* Removes bullet points */
+    display: flex;
+    list-style: none;
+    gap: 2.5rem;               /* Adds clean spaces between each link */
     margin: 0;
     padding: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
 
-nav li a {
+nav ul li a {
     text-decoration: none;
-    color: var(--primary-green);
+    color: #333333;            /* Dark text color */
     font-weight: bold;
     font-size: 1.1rem;
-    transition: color 0.2s ease-in-out;
 }
 
-nav li a:hover {
-    color: var(--primary-yellow); /* Visual feedback on hover */
+nav ul li a:hover {
+    color: #F4CE14;            /* Turns Little Lemon Yellow when hovered */
 }
-
 .hero {
   text-align: center;
   padding: 40px 20px;
@@ -142,6 +143,31 @@ nav li a:hover {
 
   font-weight: bold;
 }
+/* Container for the whole specials section */
+.specials-section {
+    padding: 3rem 4rem;
+}
+
+/* The Grid wrapper holding the cards */
+.specials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Forces exactly 3 equal columns side-by-side */
+    gap: 2rem;                             /* Spaces out the cards cleanly */
+    margin-top: 2rem;
+}
+
+/* Individual Card Styling */
+.special-card {
+    background-color: #EDEFEE;
+    border-radius: 16px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.05);
+}
+
 /* Image Properties */
 img {
     max-width: 100%;
@@ -158,20 +184,28 @@ footer {
   padding: 20px;
   margin-top: 40px;
 }
-
+/* --- Mobile and Tablet Responsive Mode --- */
 @media (max-width: 768px) {
-  nav ul {
+    nav {
+        flex-direction: column; /* Stacks logo and links vertically instead of horizontally */
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    nav ul {
+        flex-direction: row;
+        flex-wrap: wrap;       /* Allows navigation items to drop to a new line if they run out of space */
+        justify-content: center;
+        gap: 1rem;
+        padding: 0;
+    }
+}
+
+.booking-section {
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
-  }
+}
 
-  .booking-section {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .card {
+.card {
     width: 90%;
-  }
 }
