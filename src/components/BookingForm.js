@@ -7,26 +7,31 @@ function BookingForm({ availableTimes, dispatch }) {
     const [guests, setGuests] = useState(1);
     const [occasion, setOccasion] = useState("Birthday");
 
-    // Handle the date change event
-    const handleDateChange = (e) => {
-        const selectedDate = e.target.value;
-        setDate(selectedDate);
-        
-        // Step 2: Dispatch the state change when the date form field is changed
-        dispatch({ type: 'UPDATE_TIMES', payload: selectedDate });
-    };
+       
 
     const handleSubmit = (e) => {
         e.preventDefault(); // Prevents page reload
-    
-    // 1. Optional: See your data in the inspect tool console
-        console.log("Reservation Details:", { date, time, guests, occasion });
-    
-    // 2. Fixed Alert: Use backticks (`) instead of quotes to inject state data dynamically!
-        alert(`Reservation confirmed successfully!\n\nDetails:\n📅 Date: ${date}\n⏰ Time: ${time}\n👥 Guests: ${guests}\n🎉 Occasion: ${occasion}`);
-    };
 
-  
+        // 1. Structure the payload exactly like a database model expects
+        const formData = {
+            date: date,
+            time: time,
+            guests: guests,
+            occasion: occasion
+        };
+
+        // 2. Safely call the globally loaded Coursera API submit method
+        if (window.submitAPI && window.submitAPI(formData)) {
+            alert(`Reservation confirmed successfully!\n\nDetails:\n📅 Date: ${date}\n⏰ Time: ${time}\n👥 Guests: ${guests}\n🎉 Occasion: ${occasion}`);
+        } else if (!window.submitAPI) {
+            // Fallback alert in case network script experiences delay loading
+            alert(`Reservation confirmed successfully (Local Fallback)!\n\nDetails:\n📅 Date: ${date}\n⏰ Time: ${time}\n👥 Guests: ${guests}\n🎉 Occasion: ${occasion}`);
+        } else {
+            alert("Something went wrong with the reservation system. Please try again.");
+        }
+    };
+    
+     
 
     return (
         <form style={{ display: 'grid', maxWidth: '200px', gap: '20px' }} onSubmit={handleSubmit}>
@@ -35,10 +40,17 @@ function BookingForm({ availableTimes, dispatch }) {
                 type="date" 
                 id="res-date" 
                 value={date} 
-                onChange={handleDateChange} // Linked to our updated function above
+                onChange={(e) => {
+                    setDate(e.target.value);
+                    // This triggers the reducer to call fetchAPI with the new date!
+                    dispatch({ type: 'UPDATE_TIMES', payload: e.target.value });
+                }} 
                 required 
             />
 
+
+
+            
             <label htmlFor="res-time">Choose time</label>
             <select 
                 id="res-time" 

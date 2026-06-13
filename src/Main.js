@@ -1,34 +1,34 @@
 import React, { useReducer } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Homepage from './pages/HomePage';       // Fixed: Capitalized 'P' to match your disk
-import BookingPage from './pages/BookingPage'; // Points to src/pages/BookingPage.js
+import Homepage from './pages/HomePage';       
+import BookingPage from './pages/BookingPage'; 
 
-// 1. Create the function that determines the initial times
+// 1. Updated: Use fetchAPI to get actual times for today's date
 export function initializeTimes() {
-    return ["17:00", "18:00", "19:00", "20:00", "21:00", "22:00"];
+    const today = new Date();
+    // window.fetchAPI is used because the script is loaded globally via index.html
+    return window.fetchAPI ? window.fetchAPI(today) : ["17:00", "18:00", "19:00", "20:00"];
 }
 
-// 2. Create the reducer function to handle updating the times array
+// 2. Updated: Fetch new times whenever the user changes the date
 export function updateTimes(state, action) {
     switch (action.type) {
         case 'UPDATE_TIMES':
-            // For now, it returns the same static array regardless of the selected date.
-            return ["17:00", "18:00", "19:00", "20:00", "21:00", "22:00"];
+            // action.payload must be a Date object or string parsed by fetchAPI
+            const selectedDate = new Date(action.payload);
+            return window.fetchAPI ? window.fetchAPI(selectedDate) : state;
         default:
             return state;
     }
 }
 
 function Main() {
-    // 3. Initialize the useReducer hook
+    // The useReducer setup remains identical, but now handles dynamic API arrays
     const [availableTimes, dispatch] = useReducer(updateTimes, [], initializeTimes);
 
     return (
         <Routes>
-            {/* Main landing route */}
             <Route path="/" element={<Homepage />} />
-            
-            {/* Table booking route passing state and dispatch to the page wrapper */}
             <Route 
                 path="/booking" 
                 element={
