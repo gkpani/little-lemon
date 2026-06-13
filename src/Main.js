@@ -1,20 +1,17 @@
 import React, { useReducer } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom'; // Added useNavigate
 import Homepage from './pages/HomePage';       
 import BookingPage from './pages/BookingPage'; 
+import ConfirmedBooking from './pages/ConfirmedBooking'; // Added Import
 
-// 1. Updated: Use fetchAPI to get actual times for today's date
 export function initializeTimes() {
     const today = new Date();
-    // window.fetchAPI is used because the script is loaded globally via index.html
     return window.fetchAPI ? window.fetchAPI(today) : ["17:00", "18:00", "19:00", "20:00"];
 }
 
-// 2. Updated: Fetch new times whenever the user changes the date
 export function updateTimes(state, action) {
     switch (action.type) {
         case 'UPDATE_TIMES':
-            // action.payload must be a Date object or string parsed by fetchAPI
             const selectedDate = new Date(action.payload);
             return window.fetchAPI ? window.fetchAPI(selectedDate) : state;
         default:
@@ -23,8 +20,24 @@ export function updateTimes(state, action) {
 }
 
 function Main() {
-    // The useReducer setup remains identical, but now handles dynamic API arrays
     const [availableTimes, dispatch] = useReducer(updateTimes, [], initializeTimes);
+    const navigate = useNavigate(); // Initialize navigation controller hook
+
+    // New API submission orchestration function
+    function submitForm(formData) {
+        if (window.submitAPI) {
+            const isSuccess = window.submitAPI(formData);
+            if (isSuccess) {
+                navigate('/confirmed'); // Navigates via code to confirmation route
+            }
+            return isSuccess;
+        } else {
+            // Local sandbox fallback environment handling
+            console.warn("Global API target missing. Running client routing simulation.");
+            navigate('/confirmed');
+            return true;
+        }
+    }
 
     return (
         <Routes>
@@ -35,9 +48,12 @@ function Main() {
                     <BookingPage 
                         availableTimes={availableTimes} 
                         dispatch={dispatch} 
+                        submitForm={submitForm} // Passing down the submission function
                     />
                 } 
             />
+            {/* Step 1 Route Target Confirmation Entry */}
+            <Route path="/confirmed" element={<ConfirmedBooking />} />
         </Routes>
     );
 }

@@ -1,18 +1,15 @@
 import React, { useState } from 'react';
 
-// Accept availableTimes and dispatch from props instead of maintaining locally
-function BookingForm({ availableTimes, dispatch }) {
+function BookingForm({ availableTimes, dispatch, submitForm }) { // Added submitForm destructuring
     const [date, setDate] = useState("");
     const [time, setTime] = useState("");
     const [guests, setGuests] = useState(1);
     const [occasion, setOccasion] = useState("Birthday");
 
-       
-
     const handleSubmit = (e) => {
-        e.preventDefault(); // Prevents page reload
+        e.preventDefault(); // Lock screen against standard browser refreshes
 
-        // 1. Structure the payload exactly like a database model expects
+        // Construct object parameters to reflect state choices
         const formData = {
             date: date,
             time: time,
@@ -20,15 +17,8 @@ function BookingForm({ availableTimes, dispatch }) {
             occasion: occasion
         };
 
-        // 2. Safely call the globally loaded Coursera API submit method
-        if (window.submitAPI && window.submitAPI(formData)) {
-            alert(`Reservation confirmed successfully!\n\nDetails:\n📅 Date: ${date}\n⏰ Time: ${time}\n👥 Guests: ${guests}\n🎉 Occasion: ${occasion}`);
-        } else if (!window.submitAPI) {
-            // Fallback alert in case network script experiences delay loading
-            alert(`Reservation confirmed successfully (Local Fallback)!\n\nDetails:\n📅 Date: ${date}\n⏰ Time: ${time}\n👥 Guests: ${guests}\n🎉 Occasion: ${occasion}`);
-        } else {
-            alert("Something went wrong with the reservation system. Please try again.");
-        }
+        // Call the submission action passed through component props
+        submitForm(formData); 
     };
     
      

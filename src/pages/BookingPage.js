@@ -1,12 +1,16 @@
 import React from 'react';
-import BookingForm from '../components/BookingForm'; // Back out of pages, look in components
+import BookingForm from '../components/BookingForm';
 
-function BookingPage({ availableTimes, dispatch }) {
+// Destructure submitForm alongside availableTimes and dispatch
+function BookingPage({ availableTimes, dispatch, submitForm }) {
     return (
-        <main className="booking-page-container">
-            <h1>Reserve a Table</h1>
-            {/* Injecting the reusable component into the page container */}
-            <BookingForm availableTimes={availableTimes} dispatch={dispatch} />
+        <main>
+            <h1 style={{ textAlign: 'center', marginTop: '20px' }}>Reserve a Table</h1>
+            <BookingForm 
+                availableTimes={availableTimes} 
+                dispatch={dispatch} 
+                submitForm={submitForm} // Hand off property safely
+            />
         </main>
     );
 }
