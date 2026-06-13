@@ -57,7 +57,9 @@ test('updateTimes function returns the updated array regardless of state changes
     expect(actualResult).toEqual(mockTimesArray);
 });
 
-// Test 4: Form Submission Orchestration Verification
+// ==========================================
+// Test 4: Form Submission Orchestration Verification (FIXED)
+// ==========================================
 test('Calls submitForm handler with state payload when submission button is clicked', () => {
     const mockAvailableTimes = ["17:00", "18:00"];
     const mockDispatch = jest.fn();
@@ -71,8 +73,22 @@ test('Calls submitForm handler with state payload when submission button is clic
         />
     );
 
+    // 1. Target the input fields
+    const dateInput = screen.getByLabelText(/Choose date/i);
+    const timeSelect = screen.getByLabelText(/Choose time/i);
+    const guestsInput = screen.getByLabelText(/Number of guests/i);
+    const occasionSelect = screen.getByLabelText(/Occasion/i);
     const submitButton = screen.getByText(/Make Your Reservation/i);
+
+    // 2. Simulate filling out the form to pass validation and enable the button
+    fireEvent.change(dateInput, { target: { value: '2026-06-13' } });
+    fireEvent.change(timeSelect, { target: { value: '17:00' } });
+    fireEvent.change(guestsInput, { target: { value: '2' } });
+    fireEvent.change(occasionSelect, { target: { value: 'Birthday' } });
+
+    // 3. Now that the form is valid, click the enabled submit button
     fireEvent.click(submitButton);
 
+    // 4. Verify that the submit handler function triggers successfully
     expect(mockSubmitForm).toHaveBeenCalledTimes(1);
 });
