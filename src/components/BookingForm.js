@@ -102,7 +102,7 @@ function BookingForm({ availableTimes, dispatch, submitForm }) {
                 type="submit" 
                 value="Make Your Reservation" 
                 disabled={!isFormValid()} 
-                aria-label="On Click Submit Reservation Button"
+                aria-label="On Click"
                 style={{
                     backgroundColor: isFormValid() ? "#F4CE14" : "#CCCCCC",
                     cursor: isFormValid() ? "pointer" : "not-allowed"
