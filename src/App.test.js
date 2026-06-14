@@ -57,9 +57,7 @@ test('updateTimes function returns the updated array regardless of state changes
     expect(actualResult).toEqual(mockTimesArray);
 });
 
-// ==========================================
-// Test 4: Form Submission Orchestration Verification (FIXED)
-// ==========================================
+// Test 4: Form Submission Orchestration Verification (Valid JavaScript State)
 test('Calls submitForm handler with state payload when submission button is clicked', () => {
     const mockAvailableTimes = ["17:00", "18:00"];
     const mockDispatch = jest.fn();
@@ -73,22 +71,75 @@ test('Calls submitForm handler with state payload when submission button is clic
         />
     );
 
-    // 1. Target the input fields
     const dateInput = screen.getByLabelText(/Choose date/i);
     const timeSelect = screen.getByLabelText(/Choose time/i);
     const guestsInput = screen.getByLabelText(/Number of guests/i);
     const occasionSelect = screen.getByLabelText(/Occasion/i);
     const submitButton = screen.getByText(/Make Your Reservation/i);
 
-    // 2. Simulate filling out the form to pass validation and enable the button
     fireEvent.change(dateInput, { target: { value: '2026-06-13' } });
     fireEvent.change(timeSelect, { target: { value: '17:00' } });
     fireEvent.change(guestsInput, { target: { value: '2' } });
     fireEvent.change(occasionSelect, { target: { value: 'Birthday' } });
 
-    // 3. Now that the form is valid, click the enabled submit button
     fireEvent.click(submitButton);
 
-    // 4. Verify that the submit handler function triggers successfully
     expect(mockSubmitForm).toHaveBeenCalledTimes(1);
+});
+
+// ====================================================================
+// NEW: Step 1 - Validate HTML5 validation attributes are applied
+// ====================================================================
+test('Validates that native HTML5 attributes are applied to inputs', () => {
+    const mockAvailableTimes = ["17:00", "18:00"];
+    render(
+        <BookingForm 
+            availableTimes={mockAvailableTimes} 
+            dispatch={jest.fn()} 
+            submitForm={jest.fn()} 
+        />
+    );
+
+    const dateInput = screen.getByLabelText(/Choose date/i);
+    const timeSelect = screen.getByLabelText(/Choose time/i);
+    const guestsInput = screen.getByLabelText(/Number of guests/i);
+    const occasionSelect = screen.getByLabelText(/Occasion/i);
+
+    // Verify HTML5 validation requirements
+    expect(dateInput).toHaveAttribute('required');
+    expect(timeSelect).toHaveAttribute('required');
+    expect(occasionSelect).toHaveAttribute('required');
+    
+    expect(guestsInput).toHaveAttribute('required');
+    expect(guestsInput).toHaveAttribute('min', '1');
+    expect(guestsInput).toHaveAttribute('max', '10');
+});
+
+// ====================================================================
+// Step 2 - Add unit tests for JavaScript validation functions (Invalid State)
+// ====================================================================
+test('Submit button is disabled when form input validation fields are invalid', () => {
+    const mockAvailableTimes = ["17:00", "18:00"];
+    render(
+        <BookingForm 
+            availableTimes={mockAvailableTimes} 
+            dispatch={jest.fn()} 
+            submitForm={jest.fn()} 
+        />
+    );
+
+    const guestsInput = screen.getByLabelText(/Number of guests/i);
+    
+    // Target using the reliable text matcher
+    const submitButton = screen.getByText(/Make Your Reservation/i);
+
+    // Scenario A: Fields are initially blank/empty (Should be disabled)
+    expect(submitButton).toBeDisabled();
+
+    // Scenario B: Out-of-bounds guest count constraint checks
+    fireEvent.change(guestsInput, { target: { value: '0' } });
+    expect(submitButton).toBeDisabled();
+
+    fireEvent.change(guestsInput, { target: { value: '15' } });
+    expect(submitButton).toBeDisabled();
 });
