@@ -17,7 +17,7 @@
 /* Hero Section */
 .hero {
   background-color: #495e57;
-  color: white;
+  color: #EDEFEE;
   padding: 2rem;
   text-align: center;
 }
@@ -35,6 +35,15 @@
   margin-top: 1rem;
   cursor: pointer;
 }
+/* Target the paragraph explicitly inside your hero class */
+.hero-section p, 
+.hero p {
+    color: #EDEFEE !important; /* Force a clean, high-contrast light gray/white text color */
+    font-size: 1.1rem;
+}
+
+
+
 
 /* Sections */
 section {
@@ -90,6 +99,36 @@ header img {
   width: 200px;
 }
 
+/* 1. Turn the navbar into a row flexbox layout container */
+.navbar {
+    display: flex;
+    justify-content: space-between; /* Pushes the logo to the left side and links to the right side */
+    align-items: center;            /* Vertically centers the logo image and text strings */
+    padding: 10px 40px;             /* Adds clean left/right breathing margins */
+    background-color: #FFFFFF;      /* Keeps navigation clean and crisp */
+}
+
+/* 2. Style the navigation link menu items list row */
+.nav-links {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 25px;                      /* Creates a mandatory 25px space gap between every menu option string */
+}
+
+/* 3. Style individual tracking link tags */
+.nav-links a {
+    text-decoration: none;
+    color: #495E57;                 /* Little Lemon Classic Corporate Green */
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.nav-links a:hover {
+    color: #F4CE14;                 /* Highlight color shift on mouse hover */
+}
+
 /* Base styles for Desktop Mode */
 nav {
     background-color: #EDEFEE; /* Little Lemon Highlight Light Grey */
@@ -118,6 +157,9 @@ nav ul li a {
 nav ul li a:hover {
     color: #F4CE14;            /* Turns Little Lemon Yellow when hovered */
 }
+
+
+
 .hero {
   text-align: center;
   padding: 40px 20px;
@@ -177,13 +219,39 @@ img {
     object-fit: cover;
 }
 
-footer {
-  background: #495e57;
-  color: white;
-  text-align: center;
-  padding: 20px;
-  margin-top: 40px;
+/* Target both the semantic tag and the likely class name */
+footer, 
+.footer-section,
+.footer {
+    background-color: #495E57 !important; /* Little Lemon Dark Green */
+    color: #FFFFFF !important;            /* Pure white text */
+    padding: 30px 20px !important;        /* Forces structural padding so it cannot collapse */
+    width: 100% !important;
+    display: block !important;            /* Ensures it forces a block row at the bottom */
+    text-align: center;
+    margin-top: 40px;                     /* Adds spacing below the 'Little Lemon Chicago' section */
 }
+
+/* Ensure all nested typography tags turn crisp white */
+footer p, footer span, footer div,
+.footer-section p, .footer-section span, .footer-section div {
+    color: #FFFFFF !important;
+    margin: 0;
+    padding: 5px 0;
+}
+
+/* Fix link styling inside the footer */
+footer a, 
+.footer-section a {
+    color: #EDEFEE !important;
+    text-decoration: none;
+}
+
+footer a:hover, 
+.footer-section a:hover {
+    color: #F4CE14 !important;            /* Highlight yellow on hover */
+}
+
 /* --- Mobile and Tablet Responsive Mode --- */
 @media (max-width: 768px) {
     nav {
