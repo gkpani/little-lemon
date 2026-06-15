@@ -16,6 +16,27 @@ function BookingForm({ availableTimes, dispatch, submitForm }) {
         }
     };
 
+    // 1. Define error state blocks
+    const [errors, setErrors] = useState({
+        date: "",
+        guests: ""
+    });
+
+    // 2. Validate field inputs on blur or change
+    const handleGuestChange = (e) => {
+        const value = parseInt(e.target.value, 10);
+        setGuests(value);
+
+        if (value < 1 || value > 10) {
+            setErrors(prev => ({
+                ...prev,
+                guests: "Party size must be between 1 and 10 guests for online reservations."
+            }));
+        } else {
+            setErrors(prev => ({ ...prev, guests: "" }));
+        }
+    };
+
     // 3. React Client-side Validation: Evaluate form completion criteria
     // Form is considered valid if:
     // - Date is picked
@@ -34,9 +55,22 @@ function BookingForm({ availableTimes, dispatch, submitForm }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (isFormValid()) {
-            submitForm({ date, time, guests, occasion });
+
+        // Validate the guest range using whatever your state variable is named (e.g., guests)
+        if (guests < 1 || guests > 10) {
+            return; 
         }
+
+        // Create the object right here so the compiler knows what 'formData' is
+        const formData = {
+            date,
+            time,
+            guests, // or guestCount, matching your state
+            occasion
+        };
+
+        // Call submitForm directly because it's destructured! No 'props.' needed.
+        submitForm(formData); 
     };
 
     return (
@@ -71,19 +105,37 @@ function BookingForm({ availableTimes, dispatch, submitForm }) {
                 ))}
             </select>
 
-            {/* Guests Count Input Field */}
-            <label htmlFor="guests">Number of guests</label>
-            <input 
-                type="number" 
-                placeholder="1" 
-                min="1"    // HTML5 Validation: Minimum boundary
-                max="10"   // HTML5 Validation: Maximum boundary
-                id="guests" 
-                value={guests} 
-                onChange={(e) => setGuests(parseInt(e.target.value) || 0)}
-                required // HTML5 Validation
+        <div className="form-group">
+            <label htmlFor="guests">Number of Guests</label>
+            <input
+                id="guests"
+                type="number"
+                value={guests}
+                onChange={handleGuestChange}
+                min="1"
+                max="10"
+                required
+                aria-invalid={errors.guests ? "true" : "false"}
+                aria-describedby="guests-error"
+                className={errors.guests ? "input-field error-border" : "input-field"}
             />
+            {/* Plain language message rendered safely when state exists */}
+            {errors.guests && (
+                <p id="guests-error" className="error-message" role="alert">
+                    {errors.guests}
+                </p>
+            )}
+        </div>
+            {/* Add this block right below your guest input tag to satisfy Heuristics 5 & 9 */}
+            {guests > 10 && (
+                <p 
+                    style={{ color: "#FF4D4D", fontSize: "14px", marginTop: "5px" }} role="alert" >
+                    * Online booking is limited to 10 guests. For larger parties, please contact us at (555) 123-4567.
+                </p>
+            )}
 
+
+            
             {/* Occasion Select Field */}
             <label htmlFor="occasion">Occasion</label>
             <select 
