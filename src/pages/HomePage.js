@@ -10,6 +10,7 @@ function HomePage() {
       <Specials />
       <CustomersSay />
       <Chicago />
+          
     </>
   );
 }

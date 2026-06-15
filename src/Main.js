@@ -3,6 +3,8 @@ import { Routes, Route, useNavigate } from 'react-router-dom'; // Added useNavig
 import Homepage from './pages/HomePage';       
 import BookingPage from './pages/BookingPage'; 
 import ConfirmedBooking from './pages/ConfirmedBooking'; // Added Import
+import UnderConstruction from './components/UnderConstruction';
+
 
 export function initializeTimes() {
     const today = new Date();
@@ -54,6 +56,10 @@ function Main() {
             />
             {/* Step 1 Route Target Confirmation Entry */}
             <Route path="/confirmed" element={<ConfirmedBooking />} />
+            <Route path="/about" element={<UnderConstruction pageName="About Us" />} />
+            <Route path="/menu" element={<UnderConstruction pageName="Our Menu" />} />
+            <Route path="/order-online" element={<UnderConstruction pageName="Online Ordering" />} />
+            <Route path="/login" element={<UnderConstruction pageName="Customer Login" />} />
         </Routes>
     );
 }
