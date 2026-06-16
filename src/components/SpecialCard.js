@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function SpecialCard({ image, title, price, description }) {
     return (
@@ -9,9 +10,14 @@ function SpecialCard({ image, title, price, description }) {
                 <span className="price">${price}</span>
             </div>
             <p>{description}</p>
-            <button className="order-delivery-btn">
-                Order a delivery <span>🚴</span>
-            </button>
+
+            <Link to="/order-online" style={{ textDecoration: 'none', color: 'inherit' }}>
+                <button className="delivery-btn" style={{ cursor: 'pointer' }}>
+                    Order a delivery 🚴
+                </button>
+            </Link>
+
+           
         </article>
     );
 }

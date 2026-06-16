@@ -1,9 +1,7 @@
 import React from 'react';
 import SpecialCard from './SpecialCard';
-import GreekSalad from '../images/GreekSalad.jpg'; 
-import Bruschetta from '../images/Bruschetta.jpg'; // check if extension is .jpg, .png, or .svg
-import Lemon_Dessert from '../images/Lemon_Dessert1.jpg';
 
+import { Link } from 'react-router-dom';
 
 
 // Sample data array representing items from your design
@@ -36,13 +34,15 @@ function Specials() {
         <section className="specials-section">
             <div className="specials-top-bar">
                 <h2>This Week's Specials!</h2>
-                <button className="menu-btn">Online Menu</button>
             </div>
-            
+            <Link to="/menu" style={{ textDecoration: 'none' }}>
+                <button className="menu-btn">Online Menu</button>
+            </Link>
+
             <div className="specials-grid">
                 {specialsData.map((item) => (
-                    <SpecialCard 
-                        key={item.id} // Essential for React rendering performance
+                    <SpecialCard
+                        key={item.id}
                         title={item.title}
                         price={item.price}
                         image={item.image}
@@ -55,3 +55,4 @@ function Specials() {
 }
 
 export default Specials;
+       
